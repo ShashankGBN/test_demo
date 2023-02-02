@@ -1,0 +1,92 @@
+1. Select employees first name, last name, job_id and salary whose first name starts with alphabet S
+ =>  Select First_Name, Last_Name , Job_ID, salary from employees where First_Name like 'S%';
+
+	FIRST_NAME           LAST_NAME                 JOB_ID         SALARY
+	-------------------- ------------------------- ---------- ----------
+	Steven               King                      AD_PRES         24000
+	Shelli               Baida                     PU_CLERK         2900
+	Sigal                Tobias                    PU_CLERK         2800
+	Shanta               Vollman                   ST_MAN           6500
+	Steven               Markle                    ST_CLERK         2200
+
+
+2. Write a query to select employee with the highest salary
+=>  Select max(salary) from employees;
+
+	MAX(SALARY)
+	-----------
+      	24000
+
+ =>  Select First_name from employees where salary=(Select max(salary) from employees);
+
+	FIRST_NAME
+	--------------------
+	Steven
+ 
+3. Select employee with the second highest salary
+=> Select First_name, Last_name from employees where salary=(Select max(salary) as "Second maximum
+   salary" from (Select salary from employees where salary!=(Select max(salary) from employees)));
+
+	FIRST_NAME           LAST_NAME
+	-------------------- -------------------------
+	Neena                Kochhar
+	Lex                  De Haan
+
+ =>  Select First_name, salary from employees where salary=(Select min(salary) from (Select distinct(salary) from employees order by salary desc) where rownum<=2);
+
+	FIRST_NAME               SALARY
+	-------------------- ----------
+	Neena                     17000
+	Lex                       17000
+ 
+ 4.Fetch employees with 2nd or 3rd highest salary
+ =>  Select First_name, salary from employees where salary=(Select min(salary) from (Select distinct(salary) from employees order by salary desc) where rownum<=3);
+
+	FIRST_NAME               SALARY
+	-------------------- ----------
+	Nancy                     12000
+
+5.Write a query to select employees and their corresponding managers and their salaries
+=>  SELECT 
+        sub.first_name AS subordinate_first_name,
+        sub.last_name AS subordinate_last_name,
+        sup.first_name AS superior_first_name,
+        sup.last_name AS superior_last_name,
+        sup.salary AS superior_salary
+    FROM employees sub
+    JOIN employees sup
+    ON sub.manager_id = sup.employee_id;
+
+SUBORDINATE_FIRST_NA SUBORDINATE_LAST_NAME     SUPERIOR_FIRST_NAME  SUPERIOR_LAST_NAME        SUPERIO
+-------------------- ------------------------- -------------------- ------------------------- ------
+Kevin                Mourgos                   Steven               King                                24000
+Shanta               Vollman                   Steven               King                                24000
+Payam                Kaufling                  Steven               King                                24000
+Adam                 Fripp                     Steven               King                                24000
+Matthew              Weiss                     Steven               King                                24000
+Den                  Raphaely                  Steven               King                                24000
+Lex                  De Haan                   Steven               King                                24000
+Neena                Kochhar                   Steven               King                                24000
+Nancy                Greenberg                 Neena                Kochhar                             17000
+Alexander            Hunold                    Lex                  De Haan                             17000
+Diana                Lorentz                   Alexander            Hunold                               9000
+Valli                Pataballa                 Alexander            Hunold                               9000
+David                Austin                    Alexander            Hunold                               9000
+Bruce                Ernst                     Alexander            Hunold                               9000
+Luis                 Popp                      Nancy                Greenberg                           12000
+Jose Manuel          Urman                     Nancy                Greenberg                           12000
+Ismael               Sciarra                   Nancy                Greenberg                           12000
+John                 Chen                      Nancy                Greenberg                           12000
+Daniel               Faviet                    Nancy                Greenberg                           12000
+Karen                Colmenares                Den                  Raphaely                            11000
+Guy                  Himuro                    Den                  Raphaely                            11000
+Sigal                Tobias                    Den                  Raphaely                            11000
+Shelli               Baida                     Den                  Raphaely                            11000
+Alexander            Khoo                      Den                  Raphaely                            11000
+Steven               Markle                    Matthew              Weiss                                8000
+James                Landry                    Matthew              Weiss                                8000
+Irene                Mikkilineni               Matthew              Weiss                                8000
+Julia                Nayer                     Matthew              Weiss                                8000
+Mozhe                Atkinson                  Adam                 Fripp                                8200
+Laura                Bissot                    Adam                 Fripp                                8200
+
